@@ -1,6 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:paddingBottom="16dp"
+        android:translationZ="1dp"
+        app:title="City"
+        app:titleCentered="true" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:isScrollContainer="true">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="200dp" />
+
+            <ImageView
+                android:id="@+id/ic_weather"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/icon_clear"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/guideline"
+                app:layout_constraintEnd_toStartOf="@id/tv_current_temperature"
+                app:layout_constraintBottom_toTopOf="@id/tv_weather_title"/>
+
+            <TextView
+                android:id="@+id/tv_current_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0℃"
+                android:textSize="64sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ic_weather"
+                app:layout_constraintTop_toTopOf="@id/ic_weather"
+                app:layout_constraintBottom_toBottomOf="@id/ic_weather" />
+
+            <TextView
+                android:id="@+id/tv_weather_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Сlear"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ic_weather"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_updated_date" />
+
+            <TextView
+                android:id="@+id/tv_updated_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Updated: 11.04.2023 12:51"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_weather_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_error"/>
+
+            <TextView
+                android:id="@+id/tv_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Error"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_updated_date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/btn_update" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_update"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="100dp"
+                android:layout_marginBottom="20dp"
+                android:text="Update"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_error"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_spinner_title"
+                style="@style/Widget.Material3.Button.OutlinedButton" />
+
+            <TextView
+                android:id="@+id/tv_spinner_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data source:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_update"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/spinner_weather_api" />
+
+            <Spinner
+                android:id="@+id/spinner_weather_api"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="75dp"
+                tools:listitem="@layout/support_simple_spinner_dropdown_item"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_spinner_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</FrameLayout>
