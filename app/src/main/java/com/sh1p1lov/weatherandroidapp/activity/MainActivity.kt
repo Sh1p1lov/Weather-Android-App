@@ -9,6 +9,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.sh1p1lov.weatherandroidapp.databinding.ActivityMainBinding
+import com.sh1p1lov.weatherandroidapp.fragment.WeatherFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +42,18 @@ class MainActivity : AppCompatActivity() {
                 windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
             }
 
+            updateWeatherFragmentToolbarPaddingTop(windowInsets)
+
             WindowInsetsCompat.CONSUMED
+        }
+    }
+
+    private fun updateWeatherFragmentToolbarPaddingTop(insets: WindowInsetsCompat) {
+        val childFragment = supportFragmentManager.findFragmentById(binding.fragmentContainer.id)
+
+        if (childFragment is WeatherFragment) {
+            val topPadding = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.statusBars()).top
+            childFragment.updateToolbarPaddingTop(topPadding)
         }
     }
 
