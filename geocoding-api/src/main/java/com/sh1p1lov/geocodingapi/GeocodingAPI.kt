@@ -18,7 +18,7 @@ interface GeocodingAPI {
     ): Response<GeocodingApiResponse>
 
     companion object {
-        private const val BASE_URL = "http://dev.virtualearth.net/REST/v1/"
+        private const val BASE_URL = "https://dev.virtualearth.net/REST/v1/"
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
