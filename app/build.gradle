@@ -37,6 +37,9 @@ android {
 
 dependencies {
 
+    implementation project(':data')
+    implementation project(':domain')
+
     def koinVersion = "3.4.0"
     implementation "io.insert-koin:koin-android:$koinVersion"
 
