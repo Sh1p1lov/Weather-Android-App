@@ -12,8 +12,8 @@ interface GeocodingAPI {
 
     @GET("Locations/{point}?")
     suspend fun reverseGeocode(
-        @Query("key") apiKey: String,
         @Path("point") point: String,      // example: 47.64054,-122.12934 (lat,long)
+        @Query("key") apiKey: String,
         @Query("c") culture: String        // ru, en-US
     ): Response<GeocodingApiResponse>
 
