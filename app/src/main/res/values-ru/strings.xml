@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="weather_clear">Ясно</string>
+    <string name="weather_cloudy">Облачно</string>
+    <string name="weather_partly_cloudy">Частичная облачность</string>
+    <string name="weather_precipitation">Осадки</string>
+
+    <string name="updated_date_title">Обновлено:</string>
+    <string name="button_update">Обновить</string>
+    <string name="data_source">Источник</string>
+
+    <string name="location_error">Не удалось определить местоположение.</string>
+    <string name="outdated_location_error">
+        Не удалось определить текущее местоположение.
+        Будет использовано последнее сохраненное.
+    </string>
+    <string name="data_update_error">Не удалось обновить данные.</string>
+</resources>
