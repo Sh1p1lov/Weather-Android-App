@@ -35,7 +35,12 @@ class WeatherFragmentViewModel(
     fun dataUpdateError() { mutableError.value = ERROR_CODE_DATA_UPDATE }
 
     fun updateData(latitude: Double, longitude: Double) {
-        viewModelScope.launch {
+
+        val exceptionHandler = CoroutineExceptionHandler { _, _ ->
+            dataUpdateError()
+        }
+
+        viewModelScope.launch(exceptionHandler) {
             updateGeocoding(latitude, longitude)
         }
     }
