@@ -2,8 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -12,6 +11,7 @@
         android:background="@android:color/transparent"
         android:paddingBottom="16dp"
         android:translationZ="1dp"
+        app:menu="@menu/switch_language_menu"
         app:title="City"
         app:titleCentered="true" />
 
@@ -24,6 +24,7 @@
             android:id="@+id/content_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:animateLayoutChanges="true"
             android:isScrollContainer="true">
 
             <androidx.constraintlayout.widget.Guideline
@@ -62,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="Сlear"
+                android:text="@string/weather_clear"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ic_weather"
@@ -70,12 +71,24 @@
                 app:layout_constraintBottom_toTopOf="@id/tv_updated_date" />
 
             <TextView
+                android:id="@+id/tv_updated_date_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/updated_date_title"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_updated_date"
+                app:layout_constraintEnd_toStartOf="@id/tv_updated_date"
+                app:layout_constraintBottom_toBottomOf="@id/tv_updated_date" />
+
+            <TextView
                 android:id="@+id/tv_updated_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:text="Updated: 11.04.2023 12:51"
-                app:layout_constraintStart_toStartOf="parent"
+                android:text="11.04.2023 12:51"
+                app:layout_constraintStart_toEndOf="@id/tv_updated_date_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_weather_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/tv_error"/>
@@ -85,7 +98,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:text="Error"
+                android:paddingHorizontal="16dp"
+                android:textColor="#DC6161"
+                android:textAlignment="center"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_updated_date"
@@ -98,32 +113,40 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="100dp"
                 android:layout_marginBottom="20dp"
-                android:text="Update"
+                android:text="@string/button_update"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_error"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/tv_spinner_title"
+                app:layout_constraintBottom_toTopOf="@id/tv_dropdown_menu_title"
                 style="@style/Widget.Material3.Button.OutlinedButton" />
 
             <TextView
-                android:id="@+id/tv_spinner_title"
+                android:id="@+id/tv_dropdown_menu_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Data source:"
+                android:text="@string/data_source"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_update"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/spinner_weather_api" />
+                app:layout_constraintBottom_toTopOf="@id/dropdown_menu_layout" />
 
-            <Spinner
-                android:id="@+id/spinner_weather_api"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dropdown_menu_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="75dp"
-                tools:listitem="@layout/support_simple_spinner_dropdown_item"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_spinner_title"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/tv_dropdown_menu_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/dropdown_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
