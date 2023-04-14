@@ -10,9 +10,9 @@ import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
@@ -45,15 +45,13 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             appPref.getLocationLatitude()?.let { lat ->
                 vm.outdatedLocationError()
                 val lon = appPref.getLocationLongitude()!!
-                vm.updateData(latitude = lat, longitude = lon)
+                vm.updateData(latitude = lat, longitude = lon, appPref.getCurrentSource())
 
             } ?: vm.locationError()
         }
     }
 
     private val onCurrentLocationListener: OnCurrentLocationListener = { location ->
-        Log.d("WeatherFragmentTag", location.toString())
-
         if (vm.error.value == WeatherFragmentViewModel.ERROR_CODE_LOCATION
             || vm.error.value == WeatherFragmentViewModel.ERROR_CODE_OUTDATED_LOCATION
         ) {
@@ -67,7 +65,8 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
         vm.updateData(
             latitude = location.latitude,
-            longitude = location.longitude
+            longitude = location.longitude,
+            appPref.getCurrentSource()
         )
     }
 
@@ -75,8 +74,33 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentWeatherBinding.bind(view)
         updateLocale()
+        updateWeatherState(appPref.getWeatherState())
+
+        val progressViewOffsetPx =
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                PROGRESS_VIEW_OFFSET_DP,
+                requireContext().resources.displayMetrics
+            ).toInt()
+        binding.swipeContainer.setProgressViewEndTarget(true, progressViewOffsetPx)
+
+        binding.swipeContainer.setOnRefreshListener {
+            getCurrentLocation(l = onCurrentLocationListener)
+        }
+
+        if (vm.pageLoaded.value == null) {
+            binding.swipeContainer.isRefreshing = true
+            vm.setCurrentTemperature(appPref.getCurrentTemperature().toDouble())
+            vm.setUpdatedDate(appPref.getUpdatedDate())
+            getCurrentLocation(l = onCurrentLocationListener)
+        }
+
+        vm.pageLoaded.observe(viewLifecycleOwner) {
+            binding.swipeContainer.isRefreshing = false
+        }
 
         binding.btnUpdate.setOnClickListener {
+            binding.swipeContainer.isRefreshing = true
             getCurrentLocation(l = onCurrentLocationListener)
         }
 
@@ -92,6 +116,28 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                 }
             }
             true
+        }
+
+        binding.dropdownMenu.apply {
+            val context = requireContext()
+            val items = listOf(
+                context.getText(R.string.source_open_meteo_api),
+                context.getText(R.string.source_weather_api)
+            )
+            val adapter = ArrayAdapter(context, R.layout.list_item, items)
+            setAdapter(adapter)
+            when(appPref.getCurrentSource()) {
+                AppPrefs.SOURCE_OPEN_METEO_API -> { setText(items[0], false) }
+                AppPrefs.SOURCE_WEATHER_API -> { setText(items[1], false) }
+            }
+        }
+
+        binding.dropdownMenu.setOnItemClickListener { _, _, position, _ ->
+            if (appPref.getCurrentSource() != position) {
+                appPref.saveCurrentSource(position)
+                getCurrentLocation(l = onCurrentLocationListener)
+                binding.swipeContainer.isRefreshing = true
+            }
         }
 
         vm.error.observe(viewLifecycleOwner) { errorCode ->
@@ -137,13 +183,21 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             }
         }
 
-        val progressViewOffsetPx =
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                PROGRESS_VIEW_OFFSET_DP,
-                requireContext().resources.displayMetrics
-            ).toInt()
-        binding.swipeContainer.setProgressViewEndTarget(true, progressViewOffsetPx)
+        vm.temperature.observe(viewLifecycleOwner) { temperature ->
+            val temp = temperature.toString()
+            appPref.saveCurrentTemperature(temp)
+            binding.tvCurrentTemperature.text = temp
+        }
+
+        vm.weatherState.observe(viewLifecycleOwner) { state ->
+            appPref.saveWeatherState(state)
+            updateWeatherState(state)
+        }
+
+        vm.updatedDate.observe(viewLifecycleOwner) { date ->
+            appPref.saveUpdatedDate(date)
+            binding.tvUpdatedDate.text = date
+        }
     }
 
     fun updateToolbarPaddingTop(topPadding: Int) {
@@ -181,6 +235,36 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                     WeatherFragmentViewModel.ERROR_CODE_OUTDATED_LOCATION -> configContext.getText(R.string.outdated_location_error)
                     WeatherFragmentViewModel.ERROR_CODE_DATA_UPDATE -> configContext.getText(R.string.data_update_error)
                     else -> ""
+                }
+            }
+        }
+    }
+
+    private fun updateWeatherState(state: Int) {
+        val localeContext = requireContext().localeConfigContext()
+        when(state) {
+            AppPrefs.WEATHER_CLEAR -> {
+                with(binding) {
+                    tvWeatherTitle.text = localeContext.getText(R.string.weather_clear)
+                    icWeather.setImageResource(R.drawable.icon_clear)
+                }
+            }
+            AppPrefs.WEATHER_CLOUDY -> {
+                with(binding) {
+                    tvWeatherTitle.text = localeContext.getText(R.string.weather_cloudy)
+                    icWeather.setImageResource(R.drawable.icon_cloudy)
+                }
+            }
+            AppPrefs.WEATHER_PARTY_CLOUDY -> {
+                with(binding) {
+                    tvWeatherTitle.text = localeContext.getText(R.string.weather_partly_cloudy)
+                    icWeather.setImageResource(R.drawable.icon_partly_cloudy)
+                }
+            }
+            AppPrefs.WEATHER_PRECIPITATION -> {
+                with(binding) {
+                    tvWeatherTitle.text = localeContext.getText(R.string.weather_precipitation)
+                    icWeather.setImageResource(R.drawable.icon_precipitation)
                 }
             }
         }
@@ -237,7 +321,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                     appPref.getLocationLatitude()?.let { lat ->
                         vm.outdatedLocationError()
                         val lon = appPref.getLocationLongitude()!!
-                        vm.updateData(latitude = lat, longitude = lon)
+                        vm.updateData(latitude = lat, longitude = lon, appPref.getCurrentSource())
 
                     } ?: vm.locationError()
                 }
