@@ -16,6 +16,5 @@ rootProject.name = "Weather Android App"
 include ':app'
 include ':domain'
 include ':data'
-include ':location-api'
 include ':geocoding-api'
 include ':weather-api'
