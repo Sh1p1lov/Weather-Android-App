@@ -12,6 +12,8 @@ class WeatherApiRequest private constructor(
         WEATHER_API
     }
 
+    fun getPoint(): String = "$latitude,$longitude"
+
     class Builder {
         private var defSource = Source.OPEN_METEO_API
         private var defApiKey = ""
