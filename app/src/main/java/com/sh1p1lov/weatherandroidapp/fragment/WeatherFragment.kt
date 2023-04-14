@@ -141,6 +141,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         }
 
         vm.error.observe(viewLifecycleOwner) { errorCode ->
+            binding.swipeContainer.isRefreshing = false
             when(errorCode) {
                 WeatherFragmentViewModel.NO_ERROR -> {
                     with(binding.tvError) {
@@ -186,7 +187,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         vm.temperature.observe(viewLifecycleOwner) { temperature ->
             val temp = temperature.toString()
             appPref.saveCurrentTemperature(temp)
-            binding.tvCurrentTemperature.text = temp
+            binding.tvCurrentTemperature.text = "$temp℃"
         }
 
         vm.weatherState.observe(viewLifecycleOwner) { state ->
