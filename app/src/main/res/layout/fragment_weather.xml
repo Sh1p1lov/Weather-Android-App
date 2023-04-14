@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/sky">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -27,13 +29,6 @@
             android:animateLayoutChanges="true"
             android:isScrollContainer="true">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="200dp" />
-
             <ImageView
                 android:id="@+id/ic_weather"
                 android:layout_width="80dp"
@@ -43,7 +38,7 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/guideline"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tv_current_temperature"
                 app:layout_constraintBottom_toTopOf="@id/tv_weather_title"/>
 
@@ -51,7 +46,7 @@
                 android:id="@+id/tv_current_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0℃"
+                tools:text="0℃"
                 android:textSize="64sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ic_weather"
@@ -87,11 +82,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:text="11.04.2023 12:51"
+                tools:text="11.04.2023 12:51"
                 app:layout_constraintStart_toEndOf="@id/tv_updated_date_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_weather_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/tv_error"/>
+                app:layout_constraintBottom_toTopOf="@id/tv_error" />
 
             <TextView
                 android:id="@+id/tv_error"
@@ -138,10 +133,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_dropdown_menu_title"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/dropdown_menu"
+                    android:focusable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none" />
