@@ -7,7 +7,7 @@ import org.koin.dsl.module
 
 val appModule = module {
 
-    viewModel { WeatherFragmentViewModel(get()) }
+    viewModel { WeatherFragmentViewModel(get(), get()) }
 
     single { AppPrefs(get()) }
 }
