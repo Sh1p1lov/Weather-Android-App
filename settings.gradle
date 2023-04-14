@@ -14,3 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Weather Android App"
 include ':app'
+include ':domain'
+include ':data'
+include ':geocoding-api'
+include ':weather-api'

@@ -1,3 +1,24 @@
 <resources>
-    <string name="app_name">Weather Android App</string>
+    <string name="app_name" translatable="false">Weather Android App</string>
+    <string name="source_open_meteo_api" translatable="false">Open-Meteo API</string>
+    <string name="source_weather_api" translatable="false">Weather API</string>
+
+    <string name="weather_clear">Clear</string>
+    <string name="weather_cloudy">Cloudy</string>
+    <string name="weather_partly_cloudy">Partly Cloudy</string>
+    <string name="weather_precipitation">Precipitation</string>
+
+    <string name="updated_date_title">Updated:</string>
+    <string name="button_update">Update</string>
+    <string name="data_source">Data source</string>
+
+    <string name="menu_title_ru" translatable="false">RU</string>
+    <string name="menu_title_en" translatable="false">EN</string>
+
+    <string name="location_error">Couldn\'t determine the location.</string>
+    <string name="outdated_location_error">
+        The current location could not be determined.
+        The last saved one will be used.
+    </string>
+    <string name="data_update_error">Data could not be updated.</string>
 </resources>
