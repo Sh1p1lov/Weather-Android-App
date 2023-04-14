@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Weather Android App</string>
+    <string name="source_open_meteo_api" translatable="false">Open-Meteo API</string>
+    <string name="source_weather_api" translatable="false">Weather API</string>
 
     <string name="weather_clear">Clear</string>
     <string name="weather_cloudy">Cloudy</string>
