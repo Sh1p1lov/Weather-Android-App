@@ -19,6 +19,8 @@ class AppPrefs(private val context: Context) {
         const val WEATHER_CLOUDY = 1
         const val WEATHER_PARTY_CLOUDY = 2
         const val WEATHER_PRECIPITATION = 3
+        const val SOURCE_OPEN_METEO_API = 0
+        const val SOURCE_WEATHER_API = 1
         private const val PREFERENCES_NAME = "APP_PREFERENCES"
         private const val KEY_CURRENT_LANGUAGE = "CURRENT_LANGUAGE"
         private const val KEY_LOCATION_NAME_EN = "LOCATION_NAME_EN"
@@ -28,6 +30,7 @@ class AppPrefs(private val context: Context) {
         private const val KEY_WEATHER_STATE = "WEATHER_STATE"
         private const val KEY_CURRENT_TEMPERATURE = "CURRENT_TEMPERATURE"
         private const val KEY_UPDATED_DATE = "UPDATED_DATE"
+        private const val KEY_CURRENT_SOURCE = "CURRENT_SOURCE"
     }
 
     fun saveLocationLatitudeAndLongitude(latitude: Double, longitude: Double) {
@@ -83,13 +86,13 @@ class AppPrefs(private val context: Context) {
 
     fun getWeatherState(): Int = prefs.getInt(KEY_WEATHER_STATE, WEATHER_CLEAR)
 
-    fun saveCurrentTemperature(currentTemperature: Int) {
+    fun saveCurrentTemperature(currentTemperature: String) {
         prefs.edit(commit = true) {
-            putInt(KEY_CURRENT_TEMPERATURE, currentTemperature)
+            putString(KEY_CURRENT_TEMPERATURE, currentTemperature)
         }
     }
 
-    fun getCurrentTemperature(): Int = prefs.getInt(KEY_CURRENT_TEMPERATURE, 0)
+    fun getCurrentTemperature(): String = prefs.getString(KEY_CURRENT_TEMPERATURE, "0")!!
 
     fun saveUpdatedDate(date: String) {
         prefs.edit(commit = true) {
@@ -98,4 +101,12 @@ class AppPrefs(private val context: Context) {
     }
 
     fun getUpdatedDate(): String = prefs.getString(KEY_UPDATED_DATE, UNKNOWN_UPDATED_DATE)!!
+
+    fun saveCurrentSource(@androidx.annotation.IntRange(0, 1) source: Int) {
+        prefs.edit(commit = true) {
+            putInt(KEY_CURRENT_SOURCE, source)
+        }
+    }
+
+    fun getCurrentSource(): Int = prefs.getInt(KEY_CURRENT_SOURCE, SOURCE_OPEN_METEO_API)
 }
