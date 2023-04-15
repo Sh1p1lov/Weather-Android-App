@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/sky_translucent">
+
+    <TextView
+        android:id="@+id/tv_location_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Симферополь"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:paddingHorizontal="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <LinearLayout
+        android:id="@+id/container_weather_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_below="@id/tv_location_title"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/ic_weather"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/icon_clear" />
+
+        <TextView
+            android:id="@+id/tv_current_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0℃"
+            android:textSize="32sp"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_weather_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/weather_clear"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:paddingHorizontal="16dp"
+        android:layout_below="@id/container_weather_info"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/tv_updated_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="11.02.2022 05:24:44"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:paddingHorizontal="16dp"
+        android:layout_below="@id/tv_weather_title"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

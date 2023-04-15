@@ -1,7 +1,10 @@
 package com.sh1p1lov.weatherandroidapp.fragment
 
 import android.Manifest
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Criteria
 import android.location.Location
@@ -21,6 +24,7 @@ import com.sh1p1lov.weatherandroidapp.R
 import com.sh1p1lov.weatherandroidapp.databinding.FragmentWeatherBinding
 import com.sh1p1lov.weatherandroidapp.sharedprefs.AppPrefs
 import com.sh1p1lov.weatherandroidapp.viewmodel.WeatherFragmentViewModel
+import com.sh1p1lov.weatherandroidapp.widget.WeatherWidget
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
@@ -97,6 +101,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
         vm.pageLoaded.observe(viewLifecycleOwner) {
             binding.swipeContainer.isRefreshing = false
+            requestWidgetUpdate()
         }
 
         binding.btnUpdate.setOnClickListener {
@@ -215,6 +220,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     }
 
     private fun updateLocale() {
+        requestWidgetUpdate()
         val configContext = requireContext().localeConfigContext()
 
         with(binding) {
@@ -332,6 +338,17 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                 locationPermissionRequest.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
             }
         }
+    }
+
+    private fun requestWidgetUpdate() {
+        val context = requireContext()
+        val intent = Intent(requireContext(), WeatherWidget::class.java)
+        intent.putExtra(WeatherWidget.EXTRA_MY_UPDATE, true)
+        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+        val ids = AppWidgetManager.getInstance(context.applicationContext)
+            .getAppWidgetIds(ComponentName(context.applicationContext, WeatherWidget::class.java))
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+        context.sendBroadcast(intent)
     }
 
     override fun onDestroyView() {

@@ -21,4 +21,6 @@
         The last saved one will be used.
     </string>
     <string name="data_update_error">Data could not be updated.</string>
+
+    <string name="widget_weather_title" translatable="false">Current Weather</string>
 </resources>
