@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="weather_clear">Clear</string>
+    <string name="weather_cloudy">Cloudy</string>
+    <string name="weather_partly_cloudy">Partly Cloudy</string>
+    <string name="weather_precipitation">Precipitation</string>
+
+    <string name="updated_date_title">Updated:</string>
+    <string name="button_update">Update</string>
+    <string name="data_source">Data source</string>
+
+    <string name="location_error">Couldn\'t determine the location.</string>
+    <string name="outdated_location_error">
+        The current location could not be determined.
+        The last saved one will be used.
+    </string>
+    <string name="data_update_error">Data could not be updated.</string>
+</resources>
